@@ -1,0 +1,86 @@
+name: Automated Tests - QA Challenge
+
+on:
+  workflow_dispatch:
+    inputs:
+      adminEnvironmentUrl:
+        default: "https://qa-challenge-rx.vercel.app/"
+        description: "QA Challenge - Interview"
+        required: true
+      testSelection:
+        description: "Select the tests to run"
+        required: true
+        type: choice
+        options:
+          - "All"
+          - "Exercise 1"
+          - "Exercise 2"
+          - "Exercise 3"
+          - "Exercise 4"
+          - "Exercise 5"
+          - "Exercise 6"
+          - "Exercise 7"
+      email:
+        description: "Email address to send the test results"
+        required: true
+        type: string
+        default: "diegospedroso@gmail.com"
+
+env:
+  DOMAIN_ADMIN: https://qa-challenge-rx.vercel.app/
+  PATH_ADMIN: qa-challenge-interview
+  TEST_PATH: ""
+
+jobs:
+  cypress-tests:
+    name: Automation - ${{ github.event.inputs.testSelection }}
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Test Path
+        run: |
+          declare -A testPaths
+          testPaths=( 
+            ["Exercise1"]="cypress/e2e/Exercise1/exercise1.cy.jsx"
+            ["Exercise2"]="cypress/e2e/Exercise2/exercise2.cy.jsx"
+            ["Exercise3"]="cypress/e2e/Exercise3/exercise3.cy.jsx"
+            ["Exercise4"]="cypress/e2e/Exercise4/exercise4.cy.jsx"
+            ["Exercise5"]="cypress/e2e/Exercise5/exercise5.cy.jsx"
+            ["Exercise6"]="cypress/e2e/Exercise6/exercise6.cy.jsx"
+            ["Exercise7"]="cypress/e2e/Exercise7/exercise7.cy.jsx"
+            ["All"]="cypress/e2e/**/*.cy.{js,jsx}"
+          )
+          echo "TEST_PATH=${testPaths[${{ github.event.inputs.testSelection }}]}" >> $GITHUB_ENV
+
+      - name: Install dependencies and Execute Cypress Tests
+        run: |
+          npm install
+          export CYPRESS_BASE_URL=https://qa-challenge-rx.vercel.app/
+          if [[ "${{ github.event.inputs.testSelection }}" == "All" ]]; then
+            npm run cypress:run
+          else
+            npm run cypress:run -- --spec "${{ env.TEST_PATH }}"
+          fi
+
+      - name: Send Test Results via Email
+        if: always()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.GMAIL_USERNAME }}
+          password: ${{ secrets.GMAIL_PASSWORD }}
+          subject: "Cypress Test Results - ${{ github.event.inputs.testSelection }}"
+          to: ${{ github.event.inputs.email }}
+          from: "diegospedroso@gmail.com"
+          body: |
+            Hello,
+
+            The Cypress action tests for the selection ${{ github.event.inputs.testSelection }} have been completed.
+
+            Attached, you will find videos for the tests that passed. However, if any test failed, you will find a screenshot of the error.
+            
+          attachments: |
+            cypress/videos/*.mp4
+            cypress/screenshots/*
