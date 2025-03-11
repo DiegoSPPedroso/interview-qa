@@ -82,5 +82,5 @@ jobs:
             Attached, you will find videos for the tests that passed. However, if any test failed, you will find a screenshot of the error.
             
           attachments: |
-            cypress/videos/*.mp4
-            cypress/screenshots/*
+            cypress/videos/*/*.mp4
+            cypress/screenshots/*/*
