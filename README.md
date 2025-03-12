@@ -26,19 +26,30 @@ To get started, clone this repository and install the dependencies.
 
 2. Install dependencies:
 
-   You can use **NPM** or **Yarn** to install the project dependencies.
+- **Node.js**:  
+   If you don't have [Node.js](https://nodejs.org/pt) installed, please install the latest version (v16 or higher recommended).
 
-   - Using NPM:
+- You can use **NPM** or **Yarn** to install the project dependencies.
 
-     ```bash
-     npm install
-     ```
+- **Using NPM**:
 
-   - Using Yarn:
+  ```bash
+  npm install
+  ```
 
-     ```bash
-     yarn install
-     ```
+  ```bash
+  npm install cypress --save-dev
+  ```
+
+- **Using Yarn**:
+
+  ```bash
+  yarn install
+  ```
+
+  ```bash
+  yarn add cypress --dev
+  ```
 
 ---
 
