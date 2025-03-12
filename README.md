@@ -73,8 +73,6 @@ Once the dependencies are installed, you can run the tests in two modes:
   yarn cypress:open
   ```
 
-  -
-
 - Run Cypress in Headless Mode
 
   ```bash
@@ -86,6 +84,7 @@ Once the dependencies are installed, you can run the tests in two modes:
   ```bash
   yarn cypress:run
   ```
+
 ---
 
 ### Project Info
