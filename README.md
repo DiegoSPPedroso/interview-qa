@@ -63,15 +63,29 @@ Once the dependencies are installed, you can run the tests in two modes:
 
 - Run Cypress in Interactive Mode (GUI)
 
-  - npm run cypress:open
-    or
-  - yarn cypress:open
+  ```bash
+  npm run cypress:open
+  ```
+
+  or
+
+  ```bash
+  yarn cypress:open
+  ```
+
+  -
 
 - Run Cypress in Headless Mode
-  - npm run cypress:run
-    or
-  - yarn cypress:run
 
+  ```bash
+  npm run cypress:run
+  ```
+
+  or
+
+  ```bash
+  yarn cypress:run
+  ```
 ---
 
 ### Project Info
